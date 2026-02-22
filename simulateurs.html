@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulateurs patrimoniaux — Delonca Consulting</title>
+  <meta name="description" content="Simulez vos intérêts composés, le coût de l'inaction, votre taux d'épargne et votre cashflow locatif. Estimations gratuites.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .sim-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+    @media (max-width: 900px) { .sim-grid { grid-template-columns: 1fr; } }
+
+    .sim-inputs-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 480px) { .sim-inputs-row { grid-template-columns: 1fr; } }
+
+    .ic-result-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .ic-result-mini {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+    .ic-result-mini-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+    .ic-result-mini-val { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--text-primary); }
+
+    .inaction-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .inaction-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+    .inaction-box.gold-box { border-color: var(--gold); background: var(--gold-dim); }
+    .inaction-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+    .inaction-val { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--text-primary); }
+    .inaction-box.gold-box .inaction-val { color: var(--gold); }
+    .inaction-sub { font-size: 0.72rem; color: var(--text-dim); margin-top: 2px; }
+
+    .score-bar-wrap { margin: 16px 0; }
+    .score-bar-track { height: 8px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; }
+    .score-bar-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, #EF6060 0%, #F0A340 40%, #C9A84C 70%, #5EA85C 100%); transition: width 0.4s ease; }
+
+    .cashflow-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .cashflow-mini {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+    .cashflow-mini-label { font-size: 0.68rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+    .cashflow-mini-val { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="main-nav" role="navigation" aria-label="Navigation principale">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Delonca Consulting — Accueil">
+      <span class="nav-logo-main">Delonca</span>
+      <span class="nav-logo-sub">Consulting · CGP</span>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html" class="nav-link">Accueil</a></li>
+      <li><a href="a-propos.html" class="nav-link">À propos</a></li>
+      <li><a href="pourquoi-cgp.html" class="nav-link">Pourquoi un CGP ?</a></li>
+      <li><a href="methode.html" class="nav-link">Méthode</a></li>
+      <li><a href="simulateurs.html" class="nav-link active">Simulateurs</a></li>
+      <li><a href="ressources.html" class="nav-link">Ressources</a></li>
+      <li class="nav-cta"><a href="contact.html" class="nav-link">Prendre RDV</a></li>
+    </ul>
+    <button class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile" role="dialog" aria-label="Menu mobile">
+  <a href="index.html">Accueil</a>
+  <a href="a-propos.html">À propos</a>
+  <a href="pourquoi-cgp.html">Pourquoi un CGP ?</a>
+  <a href="methode.html">Méthode</a>
+  <a href="simulateurs.html">Simulateurs</a>
+  <a href="ressources.html">Ressources</a>
+  <a href="contact.html" class="nav-cta-mobile">📅 Prendre RDV</a>
+</div>
+
+<!-- ── PAGE HERO ── -->
+<section class="page-hero" aria-label="Simulateurs">
+  <div class="container">
+    <span class="page-hero-tag">Simulateurs teaser</span>
+    <h1>Visualisez l'impact<br>de vos <em>décisions.</em></h1>
+    <p>Ces simulateurs donnent une estimation indicative pour illustrer des principes clés. Pour une analyse complète intégrant la fiscalité, vos scénarios personnels et une projection à horizon défini, réservez un diagnostic.</p>
+  </div>
+</section>
+
+<!-- ── SIMULATEURS ── -->
+<section class="section" aria-label="Les simulateurs">
+  <div class="container">
+    <div class="sim-grid">
+
+      <!-- SIM A : Intérêts composés -->
+      <div class="simulator-card reveal" id="sim-compound" aria-label="Simulateur intérêts composés">
+        <div class="simulator-header">
+          <div class="simulator-icon" aria-hidden="true">📈</div>
+          <div>
+            <div class="simulator-title">Intérêts composés</div>
+            <div class="simulator-sub">Effet boule de neige sur votre épargne</div>
+          </div>
+        </div>
+        <div class="simulator-body">
+          <div class="sim-inputs-row">
+            <div class="form-group">
+              <label class="form-label" for="ic-capital">Capital initial (€)</label>
+              <input class="form-input" type="number" id="ic-capital" value="10000" min="0" max="1000000" step="500" aria-describedby="ic-capital-hint">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="ic-mensuel">Versement mensuel (€)</label>
+              <input class="form-input" type="number" id="ic-mensuel" value="200" min="0" max="10000" step="50">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="ic-rendement">Rendement annuel : <strong id="ic-rendement-val">5 %</strong></label>
+            <input class="form-input" type="range" id="ic-rendement" value="5" min="1" max="10" step="0.5" aria-valuemin="1" aria-valuemax="10">
+            <div class="range-row"><span>1 %</span><span>10 %</span></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="ic-duree">Durée : <strong id="ic-duree-val">20 ans</strong></label>
+            <input class="form-input" type="range" id="ic-duree" value="20" min="1" max="40" step="1" aria-valuemin="1" aria-valuemax="40">
+            <div class="range-row"><span>1 an</span><span>40 ans</span></div>
+          </div>
+          <div class="ic-result-row">
+            <div class="ic-result-mini">
+              <div class="ic-result-mini-label">Capital final</div>
+              <div class="ic-result-mini-val" id="ic-result">—</div>
+            </div>
+            <div class="ic-result-mini">
+              <div class="ic-result-mini-label">Vos versements</div>
+              <div class="ic-result-mini-val" id="ic-apport">—</div>
+            </div>
+            <div class="ic-result-mini" style="border-color:var(--gold);background:var(--gold-dim);">
+              <div class="ic-result-mini-label" style="color:var(--gold);">Intérêts générés</div>
+              <div class="ic-result-mini-val" style="color:var(--gold);" id="ic-gain">—</div>
+            </div>
+          </div>
+          <canvas id="ic-chart" style="width:100%;height:auto;" role="img" aria-label="Graphique répartition capital"></canvas>
+          <div class="sim-cta-block">
+            💡 Ces chiffres ignorent la fiscalité et l'inflation. <a href="contact.html">Obtenez une projection complète →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIM B : Coût de l'inaction -->
+      <div class="simulator-card reveal" id="sim-inaction" aria-label="Simulateur coût de l'inaction">
+        <div class="simulator-header">
+          <div class="simulator-icon" aria-hidden="true">⏳</div>
+          <div>
+            <div class="simulator-title">Coût de l'inaction</div>
+            <div class="simulator-sub">1 % vs 5 % de rendement : la vraie différence</div>
+          </div>
+        </div>
+        <div class="simulator-body">
+          <div class="form-group">
+            <label class="form-label" for="ci-capital">Capital placé (€)</label>
+            <input class="form-input" type="number" id="ci-capital" value="30000" min="1000" max="1000000" step="1000">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="ci-duree">Durée : <strong id="ci-duree-val">15 ans</strong></label>
+            <input class="form-input" type="range" id="ci-duree" value="15" min="1" max="35" step="1" aria-valuemin="1" aria-valuemax="35">
+            <div class="range-row"><span>1 an</span><span>35 ans</span></div>
+          </div>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:12px;">Résultat estimatif pour deux scénarios :</p>
+          <div class="inaction-compare">
+            <div class="inaction-box">
+              <div class="inaction-label">Livret A (~ 1 %)</div>
+              <div class="inaction-val" id="ci-r1">—</div>
+              <div class="inaction-sub">Rendement faible</div>
+            </div>
+            <div class="inaction-box gold-box">
+              <div class="inaction-label">Portefeuille diversifié (~ 5 %)</div>
+              <div class="inaction-val" id="ci-r5">—</div>
+              <div class="inaction-sub">Rendement historique moyen</div>
+            </div>
+          </div>
+          <div class="sim-result" style="margin-top:16px;">
+            <div class="sim-result-label">Manque à gagner (inaction)</div>
+            <div class="sim-result-value" id="ci-delta">—</div>
+            <div class="sim-result-sub">en faveur du portefeuille diversifié</div>
+          </div>
+          <div class="sim-cta-block">
+            🔎 Estimation indicative avant impôts. <a href="contact.html">Simuler avec votre profil fiscal →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIM C : Mini audit budget -->
+      <div class="simulator-card reveal" id="sim-budget" aria-label="Simulateur audit budget">
+        <div class="simulator-header">
+          <div class="simulator-icon" aria-hidden="true">🧮</div>
+          <div>
+            <div class="simulator-title">Mini audit budget</div>
+            <div class="simulator-sub">Votre taux d'épargne en 30 secondes</div>
+          </div>
+        </div>
+        <div class="simulator-body">
+          <div class="sim-inputs-row">
+            <div class="form-group">
+              <label class="form-label" for="ab-revenus">Revenus nets / mois (€)</label>
+              <input class="form-input" type="number" id="ab-revenus" value="3500" min="0" max="50000" step="100">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="ab-charges">Charges totales / mois (€)</label>
+              <input class="form-input" type="number" id="ab-charges" value="2800" min="0" max="50000" step="100">
+            </div>
+          </div>
+          <p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:16px;">Charges = loyer/crédit + alimentation + transport + abonnements + loisirs + épargne déjà en place</p>
+          <div class="sim-result" style="margin-top:4px;">
+            <div class="sim-result-label">Taux d'épargne mensuel</div>
+            <div class="sim-result-value" id="ab-taux">—</div>
+            <div class="sim-result-sub">Score : <strong id="ab-score" style="color:var(--gold);">—</strong></div>
+          </div>
+          <div style="margin-top:12px;padding:14px;background:rgba(255,255,255,0.03);border-radius:8px;border:1px solid var(--border-subtle);">
+            <p id="ab-msg" style="font-size:0.83rem;color:var(--text-muted);line-height:1.65;"></p>
+          </div>
+          <div class="sim-cta-block" style="margin-top:12px;">
+            📊 Pour un audit budgétaire complet + plan d'action structuré : <a href="contact.html">réserver un diagnostic →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIM D : Locatif simplifié -->
+      <div class="simulator-card reveal" id="sim-locatif" aria-label="Simulateur investissement locatif">
+        <div class="simulator-header">
+          <div class="simulator-icon" aria-hidden="true">🏠</div>
+          <div>
+            <div class="simulator-title">Locatif simplifié</div>
+            <div class="simulator-sub">Cashflow et rendement brut estimés</div>
+          </div>
+        </div>
+        <div class="simulator-body">
+          <div class="sim-inputs-row">
+            <div class="form-group">
+              <label class="form-label" for="lo-prix">Prix du bien (€)</label>
+              <input class="form-input" type="number" id="lo-prix" value="180000" min="0" max="2000000" step="5000">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="lo-apport">Apport personnel (€)</label>
+              <input class="form-input" type="number" id="lo-apport" value="36000" min="0" max="2000000" step="1000">
+            </div>
+          </div>
+          <div class="sim-inputs-row">
+            <div class="form-group">
+              <label class="form-label" for="lo-loyer">Loyer mensuel espéré (€)</label>
+              <input class="form-input" type="number" id="lo-loyer" value="750" min="0" max="10000" step="25">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="lo-taux">Taux crédit (%, ex: 3.5)</label>
+              <input class="form-input" type="number" id="lo-taux" value="3.5" min="0.5" max="8" step="0.1">
+            </div>
+          </div>
+          <p style="font-size:0.75rem;color:var(--text-dim);margin-bottom:4px;">Simulation sur 20 ans. Charges estimées à 10 % du loyer.</p>
+          <div class="cashflow-row">
+            <div class="cashflow-mini">
+              <div class="cashflow-mini-label">Mensualité crédit</div>
+              <div class="cashflow-mini-val" id="lo-effort" style="color:var(--text-primary);">—</div>
+            </div>
+            <div class="cashflow-mini">
+              <div class="cashflow-mini-label">Rendement brut</div>
+              <div class="cashflow-mini-val" id="lo-yield" style="color:var(--gold);">—</div>
+            </div>
+            <div class="cashflow-mini" style="border-color:var(--gold);">
+              <div class="cashflow-mini-label">Cashflow estimé / mois</div>
+              <div class="cashflow-mini-val" id="lo-cashflow">—</div>
+            </div>
+          </div>
+          <div class="sim-cta-block" style="margin-top:14px;">
+            🏗️ Ce calcul ignore fiscalité, vacance locative et charges réelles. <a href="contact.html">Simuler votre projet complet →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Disclaimer global -->
+    <div style="margin-top:40px;padding:20px 24px;background:rgba(255,255,255,0.03);border:1px solid var(--border-subtle);border-radius:var(--radius);font-size:0.8rem;color:var(--text-dim);line-height:1.7;" class="reveal" role="note">
+      <strong style="color:var(--text-muted);">⚠️ Avertissement :</strong> Ces simulateurs ont une vocation pédagogique et illustrative uniquement. Les résultats sont des estimations basées sur des hypothèses simplifiées, ne tenant pas compte de la fiscalité personnelle, de l'inflation, des frais réels ni des aléas de marché. Ils ne constituent en aucun cas un conseil en investissement. Les performances passées ne préjugent pas des performances futures. Pour un conseil personnalisé, contactez un professionnel habilité.
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="section section--alt" aria-label="Passer à la version complète">
+  <div class="container">
+    <div class="cta-section reveal">
+      <h2>Ces chiffres vous ont interpellé ?</h2>
+      <p>Les simulateurs donnent un aperçu. La vraie valeur est dans l'analyse complète : fiscalité, scénarios personnalisés, optimisation des enveloppes.</p>
+      <div class="cta-btns">
+        <a href="contact.html" class="btn btn-primary">📅 Obtenir une analyse complète</a>
+        <a href="pourquoi-cgp.html" class="btn btn-ghost">Pourquoi un CGP ? →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">
+          <span class="nav-logo-main">Delonca Consulting</span>
+          <span class="nav-logo-sub">Conseil en Gestion de Patrimoine</span>
+        </a>
+        <p>Accompagnement patrimonial indépendant. Enregistré ORIAS [XXXX XXXX].</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="a-propos.html">À propos</a></li>
+          <li><a href="methode.html">Méthode</a></li>
+          <li><a href="simulateurs.html">Simulateurs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Conseil</h4>
+        <ul>
+          <li><a href="pourquoi-cgp.html">Pourquoi un CGP ?</a></li>
+          <li><a href="ressources.html">Ressources</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="contact.html#mentions">Mentions légales</a></li>
+          <li><a href="contact.html#mentions">Confidentialité</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 Delonca Consulting. Tous droits réservés.</p>
+      <div class="footer-legal"><a href="contact.html#mentions">Mentions légales</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js" defer></script>
+</body>
+</html>

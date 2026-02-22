@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech & Automatisation — Delonca Consulting</title>
+  <meta name="description" content="Services complémentaires : sites vitrine, automatisations n8n, DevOps, intégrations. Expertise tech au service de votre activité.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .tech-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: all var(--transition-md);
+      border-top: 2px solid transparent;
+    }
+    .tech-card:hover {
+      border-top-color: var(--gold);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card);
+    }
+    .tech-card-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .tech-card-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .tech-card-desc {
+      font-size: 0.87rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tech-tag {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border-subtle);
+      border-radius: 100px;
+      padding: 3px 10px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+    .distinction-block {
+      background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, rgba(201,168,76,0.02) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-top: 40px;
+    }
+    .distinction-block h3 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .distinction-block p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="main-nav" role="navigation" aria-label="Navigation principale">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Delonca Consulting — Accueil">
+      <span class="nav-logo-main">Delonca</span>
+      <span class="nav-logo-sub">Consulting · CGP</span>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html" class="nav-link">Accueil</a></li>
+      <li><a href="a-propos.html" class="nav-link">À propos</a></li>
+      <li><a href="pourquoi-cgp.html" class="nav-link">Pourquoi un CGP ?</a></li>
+      <li><a href="methode.html" class="nav-link">Méthode</a></li>
+      <li><a href="simulateurs.html" class="nav-link">Simulateurs</a></li>
+      <li><a href="ressources.html" class="nav-link">Ressources</a></li>
+      <li class="nav-cta"><a href="contact.html" class="nav-link">Prendre RDV</a></li>
+    </ul>
+    <button class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile" role="dialog" aria-label="Menu mobile">
+  <a href="index.html">Accueil</a>
+  <a href="a-propos.html">À propos</a>
+  <a href="pourquoi-cgp.html">Pourquoi un CGP ?</a>
+  <a href="methode.html">Méthode</a>
+  <a href="simulateurs.html">Simulateurs</a>
+  <a href="ressources.html">Ressources</a>
+  <a href="services-tech.html">Tech & Automatisation</a>
+  <a href="contact.html" class="nav-cta-mobile">📅 Prendre RDV</a>
+</div>
+
+<!-- ── PAGE HERO ── -->
+<section class="page-hero" aria-label="Services Tech">
+  <div class="container">
+    <span class="page-hero-tag">Activité complémentaire</span>
+    <h1>Tech & <em>Automatisation</em></h1>
+    <p>En parallèle du conseil patrimonial, je propose des prestations tech ciblées pour professionnels et indépendants : sites vitrine, automatisations, intégrations, infra. Des outils concrets pour gagner du temps et de l'efficacité.</p>
+    <div style="margin-top:24px;padding:12px 20px;background:var(--gold-dim);border:1px solid var(--border);border-radius:8px;display:inline-flex;gap:10px;align-items:center;font-size:0.83rem;color:var(--text-muted);">
+      <span style="color:var(--gold);">ℹ️</span>
+      Le conseil en gestion de patrimoine reste mon activité principale. Ces services s'adressent à des clients ayant un besoin tech complémentaire ou identifié.
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES TECH ── -->
+<section class="section" aria-label="Services techniques">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-tag">Prestations</span>
+      <h2 class="section-title">Ce que je peux faire pour vous</h2>
+      <div class="gold-line"></div>
+    </div>
+    <div class="grid-2" style="margin-top:48px;">
+
+      <div class="tech-card reveal reveal-1">
+        <span class="tech-card-icon" aria-hidden="true">🌐</span>
+        <div class="tech-card-title">Sites vitrine & landing pages</div>
+        <p class="tech-card-desc">Conception et développement de sites statiques premium pour professionnels, artisans, cabinets, indépendants. Design personnalisé, performance mobile, hébergement sur GitHub Pages ou Netlify. Rapide à livrer, facile à maintenir.</p>
+        <div class="tech-tags">
+          <span class="tech-tag">HTML/CSS/JS</span>
+          <span class="tech-tag">GitHub Pages</span>
+          <span class="tech-tag">Netlify</span>
+          <span class="tech-tag">SEO technique</span>
+        </div>
+      </div>
+
+      <div class="tech-card reveal reveal-2">
+        <span class="tech-card-icon" aria-hidden="true">⚙️</span>
+        <div class="tech-card-title">Automatisations n8n & workflows</div>
+        <p class="tech-card-desc">Automatisation de tâches répétitives : synchronisation de données, alertes, reporting automatique, intégration CRM/email, traitement de formulaires. N8n permet de relier vos outils sans code, avec une logique métier sur-mesure.</p>
+        <div class="tech-tags">
+          <span class="tech-tag">n8n</span>
+          <span class="tech-tag">Make</span>
+          <span class="tech-tag">Zapier</span>
+          <span class="tech-tag">API REST</span>
+          <span class="tech-tag">Webhooks</span>
+        </div>
+      </div>
+
+      <div class="tech-card reveal reveal-3">
+        <span class="tech-card-icon" aria-hidden="true">🔌</span>
+        <div class="tech-card-title">Intégrations & connecteurs</div>
+        <p class="tech-card-desc">Connexion entre vos outils existants : CRM, facturation, agenda, email marketing, formulaires, tableaux de bord. Développement de scripts d'intégration sur-mesure pour centraliser vos données et automatiser vos process métier.</p>
+        <div class="tech-tags">
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">Node.js</span>
+          <span class="tech-tag">Airtable</span>
+          <span class="tech-tag">Notion API</span>
+          <span class="tech-tag">Google Workspace</span>
+        </div>
+      </div>
+
+      <div class="tech-card reveal reveal-1">
+        <span class="tech-card-icon" aria-hidden="true">☁️</span>
+        <div class="tech-card-title">Infrastructure & DevOps léger</div>
+        <p class="tech-card-desc">Mise en place d'environnements cloud simples et robustes : hébergement VPS, déploiement continu (CI/CD), monitoring de base, gestion des sauvegardes. Pour les indépendants et petites structures qui veulent une infra fiable sans DSI.</p>
+        <div class="tech-tags">
+          <span class="tech-tag">Docker</span>
+          <span class="tech-tag">Linux</span>
+          <span class="tech-tag">GitHub Actions</span>
+          <span class="tech-tag">Nginx</span>
+          <span class="tech-tag">VPS</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bloc distinction -->
+    <div class="distinction-block reveal">
+      <h3>🔗 Tech au service du conseil patrimonial</h3>
+      <p>
+        Mon background technique n'est pas accessoire : il nourrit directement la qualité de mon accompagnement CGP. Les simulateurs de ce site, les outils de projection et de reporting que j'utilise avec mes clients sont conçus par mes soins. Cette maîtrise me permet d'automatiser la production de documents, de fiabiliser les calculs et d'offrir un suivi plus réactif.
+        <br><br>
+        Certains clients CGP me sollicitent aussi pour des problématiques tech connexes : refonte de leur site professionnel, automatisation de leur reporting fiscal, ou mise en place d'un tableau de bord de suivi patrimonial. Je propose ces missions au cas par cas, selon disponibilité.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA TECH ── -->
+<section class="section section--alt" aria-label="Contact tech">
+  <div class="container">
+    <div class="cta-section reveal">
+      <h2>Un besoin tech identifié ?</h2>
+      <p>Décrivez votre projet dans le formulaire de contact. Je vous reviens sous 48h pour évaluer la faisabilité et vous proposer une approche.</p>
+      <div class="cta-btns">
+        <a href="contact.html" class="btn btn-primary">📬 Décrire mon besoin tech</a>
+        <a href="index.html" class="btn btn-ghost">← Retour au conseil CGP</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">
+          <span class="nav-logo-main">Delonca Consulting</span>
+          <span class="nav-logo-sub">Conseil en Gestion de Patrimoine</span>
+        </a>
+        <p>Accompagnement patrimonial indépendant & services tech pour professionnels. Enregistré ORIAS [XXXX XXXX].</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation CGP</h4>
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="a-propos.html">À propos</a></li>
+          <li><a href="methode.html">Méthode</a></li>
+          <li><a href="simulateurs.html">Simulateurs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Ressources</h4>
+        <ul>
+          <li><a href="pourquoi-cgp.html">Pourquoi un CGP ?</a></li>
+          <li><a href="ressources.html">Articles</a></li>
+          <li><a href="services-tech.html">Tech & Auto</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="contact.html#mentions">Mentions légales</a></li>
+          <li><a href="contact.html#mentions">Confidentialité</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 Delonca Consulting. Tous droits réservés.</p>
+      <div class="footer-legal"><a href="contact.html#mentions">Mentions légales</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js" defer></script>
+</body>
+</html>
