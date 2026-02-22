@@ -67,6 +67,14 @@
 
         <form id="contact-form" novalidate aria-label="Formulaire de contact" class="reveal">
 
+          <!-- Web3Forms — champs techniques (invisibles) -->
+          <input type="hidden" name="access_key" value="dda08927-be27-4045-b32a-87da3a1d58a4">
+          <input type="hidden" name="subject" value="Nouvelle demande de diagnostic — Delonca Consulting">
+          <input type="hidden" name="from_name" value="Site Delonca Consulting">
+          <input type="hidden" name="redirect" value="false">
+          <!-- Anti-spam honeypot -->
+          <input type="checkbox" name="botcheck" style="display:none;">
+
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
             <div class="form-group">
               <label class="form-label" for="f-nom">Prénom & Nom *</label>
@@ -137,28 +145,26 @@
 
       <!-- Colonne droite -->
       <div>
-        <!-- Réserver via Calendly -->
-        <div class="calendly-block reveal" style="margin-bottom:28px;">
-          <h3>Réserver directement</h3>
-          <p>Choisissez un créneau dans mon calendrier pour un diagnostic de 60 minutes, en visio ou par téléphone.</p>
-          <a href="https://calendly.com/votre-lien" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width:100%;" aria-label="Réserver un créneau via Calendly (nouvelle fenêtre)">
-            📅 Voir les créneaux disponibles
-          </a>
-          <p style="font-size:0.75rem;color:var(--text-dim);margin-top:12px;text-align:center;">
-            Lien Calendly — à remplacer par votre URL réelle
-          </p>
-        </div>
-
         <!-- Coordonnées -->
         <div class="card reveal" style="margin-bottom:28px;">
           <h3 style="font-family:var(--font-display);font-size:1.2rem;font-weight:600;margin-bottom:20px;color:var(--text-primary);">Coordonnées</h3>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon" aria-hidden="true">📞</div>
+            <div>
+              <div class="contact-info-label">Téléphone</div>
+              <div class="contact-info-value">
+                <a href="tel:+33645880184">06 45 88 01 84</a>
+              </div>
+            </div>
+          </div>
 
           <div class="contact-info-item">
             <div class="contact-info-icon" aria-hidden="true">✉️</div>
             <div>
               <div class="contact-info-label">Email</div>
               <div class="contact-info-value">
-                <a href="mailto:jean@delonca-consulting.fr">jean@delonca-consulting.fr</a>
+                <a href="mailto:jean.delonca@gmail.com">jean.delonca@gmail.com</a>
               </div>
             </div>
           </div>
@@ -171,31 +177,12 @@
             </div>
           </div>
 
-          <div class="contact-info-item">
+          <div class="contact-info-item" style="margin-bottom:0;">
             <div class="contact-info-icon" aria-hidden="true">🕐</div>
             <div>
-              <div class="contact-info-label">Horaires de consultation</div>
-              <div class="contact-info-value">Lun — Ven : 9h – 19h<br>Samedi sur rendez-vous</div>
+              <div class="contact-info-label">Disponibilité</div>
+              <div class="contact-info-value">7j/7, sur rendez-vous — je m'adapte entièrement à vos horaires et contraintes</div>
             </div>
-          </div>
-
-          <div class="contact-info-item" style="margin-bottom:0;">
-            <div class="contact-info-icon" aria-hidden="true">⚡</div>
-            <div>
-              <div class="contact-info-label">Délai de réponse</div>
-              <div class="contact-info-value">Sous 24h ouvrées maximum</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Réseaux -->
-        <div class="card reveal">
-          <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:600;margin-bottom:14px;color:var(--text-primary);">Me retrouver</h3>
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <a href="https://linkedin.com/in/jean-delonca" target="_blank" rel="noopener noreferrer" class="trust-badge" style="border-radius:var(--radius-sm);text-decoration:none;" aria-label="Profil LinkedIn de Jean Delonca (nouvelle fenêtre)">
-              <span style="color:var(--gold);">in</span>
-              <span style="font-size:0.83rem;color:var(--text-muted);">LinkedIn — Jean Delonca</span>
-            </a>
           </div>
         </div>
       </div>
@@ -215,11 +202,11 @@
       <h3>Éditeur du site</h3>
       <p>
         Delonca Consulting — Jean Delonca<br>
-        Conseiller en Investissement Financier (CIF)<br>
-        Enregistré à l'ORIAS sous le numéro [XXXX XXXX] — www.orias.fr<br>
-        Membre de [Association professionnelle agréée AMF]<br>
-        SIRET : [XXX XXX XXX XXXXX]<br>
-        Email : jean@delonca-consulting.fr
+        Agent commercial — RSAC Béziers N° 831 889 670<br>
+        Greffe du Tribunal de Commerce de Béziers<br>
+        38 Rue Trajan, 34410 Sauvian<br>
+        Téléphone : 06 45 88 01 84<br>
+        Email : jean.delonca@gmail.com
       </p>
 
       <h3>Hébergement</h3>
@@ -229,10 +216,7 @@
 
       <h3>Statut réglementaire</h3>
       <p>
-        Jean Delonca exerce en qualité de Conseiller en Investissement Financier (CIF), enregistré auprès de l'Autorité des Marchés Financiers (AMF) via une association professionnelle agréée. Il est également enregistré à l'ORIAS en qualité de Courtier en Assurance (COA) et Intermédiaire en Opérations de Banque et de Services de Paiement (IOBSP).
-      </p>
-      <p>
-        Le conseil en investissement financier est régi par les articles L.541-1 et suivants du Code Monétaire et Financier. Jean Delonca est soumis aux obligations de déontologie, de compétence et d'information définies par la réglementation AMF.
+        Jean Delonca exerce en qualité d'agent commercial, enregistré au Registre Spécial des Agents Commerciaux (RSAC) sous le numéro 831 889 670 auprès du Greffe du Tribunal de Commerce de Béziers, depuis le 7 décembre 2023. Il est membre de l'association Hubnup et s'appuie sur les partenaires La Financière d'Orion (placements financiers) et Valoriciel (placements immobiliers).
       </p>
 
       <h3>Avertissement sur les risques</h3>
@@ -242,7 +226,7 @@
 
       <h3>Politique de confidentialité & RGPD</h3>
       <p>
-        Les données personnelles collectées via les formulaires de ce site (nom, email, téléphone, informations patrimoniales) sont utilisées exclusivement pour répondre à vos demandes de contact et de diagnostic. Elles ne sont transmises à aucun tiers à des fins commerciales. Conformément au Règlement Général sur la Protection des Données (RGPD — UE 2016/679), vous disposez d'un droit d'accès, de rectification, de suppression et de portabilité de vos données. Pour exercer ces droits, contactez : jean@delonca-consulting.fr. Les données sont conservées 3 ans à compter du dernier contact.
+        Les données personnelles collectées via les formulaires de ce site (nom, email, téléphone, informations patrimoniales) sont utilisées exclusivement pour répondre à vos demandes de contact et de diagnostic. Elles ne sont transmises à aucun tiers à des fins commerciales. Conformément au Règlement Général sur la Protection des Données (RGPD — UE 2016/679), vous disposez d'un droit d'accès, de rectification, de suppression et de portabilité de vos données. Pour exercer ces droits, contactez : jean.delonca@gmail.com. Les données sont conservées 3 ans à compter du dernier contact.
       </p>
 
       <h3>Cookies</h3>
@@ -257,7 +241,7 @@
 
       <h3>Médiation</h3>
       <p>
-        En cas de litige, vous pouvez recourir au médiateur de l'AMF : Médiateur de l'AMF, 17 place de la Bourse, 75082 Paris Cedex 2. Formulaire en ligne : www.amf-france.org.
+        En cas de litige non résolu à l'amiable, vous pouvez recourir au Médiateur de la consommation compétent. Coordonnées accessibles sur www.economie.gouv.fr/mediation-conso.
       </p>
     </div>
   </div>
@@ -271,7 +255,7 @@
           <span class="nav-logo-main">Delonca Consulting</span>
           <span class="nav-logo-sub">Conseil en Gestion de Patrimoine</span>
         </a>
-        <p>Accompagnement patrimonial indépendant. Enregistré ORIAS [XXXX XXXX].</p>
+        <p>Accompagnement patrimonial indépendant. Agent commercial — RSAC Béziers N° 831 889 670 · 38 Rue Trajan, 34410 Sauvian.</p>
       </div>
       <div class="footer-col">
         <h4>Navigation</h4>

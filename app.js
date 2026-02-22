@@ -298,28 +298,67 @@ function formatNum(n, decimals = 0) {
   calc();
 })();
 
-// ── Contact form ─────────────────────────────────────────────
+// ── Contact form (Web3Forms) ──────────────────────────────────
 (function () {
   const form = document.getElementById('contact-form');
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
+  const submitBtn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    // Validation
     const errors = validateForm(form);
     if (errors.length > 0) {
       showErrors(form, errors);
       return;
     }
-    // Simulate success
-    form.style.display = 'none';
-    const success = document.getElementById('form-success');
-    if (success) success.style.display = 'block';
+
+    // Bouton en état "chargement"
+    const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '⏳ Envoi en cours…';
+    }
+
+    try {
+      const formData = new FormData(form);
+      const object = {};
+      formData.forEach((val, key) => { object[key] = val; });
+
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(object)
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Succès : masquer le formulaire, afficher la confirmation
+        form.style.display = 'none';
+        const success = document.getElementById('form-success');
+        if (success) success.style.display = 'block';
+      } else {
+        throw new Error(result.message || 'Erreur lors de l\'envoi.');
+      }
+    } catch (err) {
+      // Erreur : remettre le bouton et afficher un message
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+      }
+      showGlobalError(form, '❌ Une erreur est survenue. Veuillez réessayer ou m\'écrire directement à jean.delonca@gmail.com');
+      console.error('Form error:', err);
+    }
   });
 
   function validateForm(form) {
     const errors = [];
     const nom   = form.querySelector('#f-nom');
     const email = form.querySelector('#f-email');
+    const rgpd  = form.querySelector('#f-rgpd');
 
     if (!nom || !nom.value.trim()) errors.push({ field: nom, msg: 'Votre nom est requis.' });
     if (!email || !email.value.trim()) {
@@ -327,6 +366,7 @@ function formatNum(n, decimals = 0) {
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
       errors.push({ field: email, msg: 'Email invalide.' });
     }
+    if (rgpd && !rgpd.checked) errors.push({ field: rgpd, msg: 'Vous devez accepter la politique de confidentialité.' });
     return errors;
   }
 
@@ -345,6 +385,15 @@ function formatNum(n, decimals = 0) {
       field.parentNode.appendChild(err);
     });
     if (errors[0]?.field) errors[0].field.focus();
+  }
+
+  function showGlobalError(form, msg) {
+    form.querySelectorAll('.global-error').forEach(e => e.remove());
+    const err = document.createElement('p');
+    err.className = 'global-error';
+    err.style.cssText = 'color:#EF6060;font-size:0.88rem;margin-bottom:16px;padding:12px;background:rgba(239,96,96,0.08);border-radius:8px;';
+    err.textContent = msg;
+    form.insertBefore(err, form.firstChild);
   }
 })();
 
