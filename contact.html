@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact & Diagnostic — Delonca Consulting</title>
-  <meta name="description" content="Réservez votre diagnostic patrimonial gratuit avec Jean Delonca. Formulaire de contact et prise de rendez-vous en ligne.">
+  <title>Mentions légales — Delonca Consulting</title>
+  <meta name="description" content="Mentions légales — Delonca Consulting, Jean Delonca, Agent commercial RSAC Béziers N° 831 889 670.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -25,7 +25,7 @@
       <li><a href="methode.html" class="nav-link">Méthode</a></li>
       <li><a href="simulateurs.html" class="nav-link">Simulateurs</a></li>
       <li><a href="ressources.html" class="nav-link">Ressources</a></li>
-      <li class="nav-cta"><a href="contact.html" class="nav-link active">Prendre RDV</a></li>
+      <li><a href="contact.html" class="nav-link active">Mentions légales</a></li>
     </ul>
     <button class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -39,165 +39,21 @@
   <a href="methode.html">Méthode</a>
   <a href="simulateurs.html">Simulateurs</a>
   <a href="ressources.html">Ressources</a>
-  <a href="contact.html" class="nav-cta-mobile">📅 Prendre RDV</a>
+  <a href="contact.html">Mentions légales</a>
 </div>
 
 <!-- ── PAGE HERO ── -->
-<section class="page-hero" aria-label="Contact">
+<section class="page-hero" aria-label="Mentions légales">
   <div class="container">
-    <span class="page-hero-tag">Contact</span>
-    <h1>Commençons par<br>un <em>diagnostic.</em></h1>
-    <p>60 minutes offertes pour faire le point sur votre situation patrimoniale. Remplissez le formulaire ou réservez directement un créneau via le calendrier.</p>
-  </div>
-</section>
-
-<!-- ── CONTACT LAYOUT ── -->
-<section class="section" aria-label="Formulaire de contact">
-  <div class="container">
-    <div class="contact-layout">
-
-      <!-- Formulaire -->
-      <div>
-        <div class="reveal">
-          <span class="section-tag">Formulaire diagnostic</span>
-          <h2 class="section-title" style="font-size:1.8rem;">Parlez-moi de votre situation</h2>
-          <div class="gold-line"></div>
-          <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:28px;">Ces informations me permettent de préparer notre échange et de vous proposer un premier éclairage pertinent dès le diagnostic.</p>
-        </div>
-
-        <form id="contact-form" novalidate aria-label="Formulaire de contact" class="reveal">
-
-          <!-- Web3Forms — champs techniques (invisibles) -->
-          <input type="hidden" name="access_key" value="dda08927-be27-4045-b32a-87da3a1d58a4">
-          <input type="hidden" name="subject" value="Nouvelle demande de diagnostic — Delonca Consulting">
-          <input type="hidden" name="from_name" value="Site Delonca Consulting">
-          <input type="hidden" name="redirect" value="false">
-          <!-- Anti-spam honeypot -->
-          <input type="checkbox" name="botcheck" style="display:none;">
-
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-            <div class="form-group">
-              <label class="form-label" for="f-nom">Prénom & Nom *</label>
-              <input class="form-input" type="text" id="f-nom" name="nom" autocomplete="name" placeholder="Jean Dupont" required aria-required="true">
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="f-email">Email *</label>
-              <input class="form-input" type="email" id="f-email" name="email" autocomplete="email" placeholder="jean@exemple.fr" required aria-required="true">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="f-tel">Téléphone (optionnel)</label>
-            <input class="form-input" type="tel" id="f-tel" name="tel" autocomplete="tel" placeholder="+33 6 XX XX XX XX">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="f-objectif">Votre objectif principal *</label>
-            <select class="form-select" id="f-objectif" name="objectif" required aria-required="true">
-              <option value="" disabled selected>Sélectionner votre objectif</option>
-              <option value="retraite">Préparer ma retraite</option>
-              <option value="investissement">Investir mon épargne (actions, ETF, fonds)</option>
-              <option value="immobilier">Projet immobilier (achat, locatif, SCPI)</option>
-              <option value="optimisation-fiscale">Optimisation fiscale</option>
-              <option value="transmission">Transmission / succession</option>
-              <option value="protection-famille">Protection de ma famille</option>
-              <option value="audit">Audit global de mon patrimoine</option>
-              <option value="autre">Autre</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="f-horizon">Horizon de placement</label>
-            <select class="form-select" id="f-horizon" name="horizon">
-              <option value="" disabled selected>Votre horizon</option>
-              <option value="court">Court terme (- de 3 ans)</option>
-              <option value="moyen">Moyen terme (3 à 10 ans)</option>
-              <option value="long">Long terme (+ de 10 ans)</option>
-              <option value="mixte">Mixte / Je ne sais pas encore</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="f-message">Décrivez votre situation en quelques mots</label>
-            <textarea class="form-textarea" id="f-message" name="message" placeholder="Ex : Je suis cadre 37 ans, j'ai 40 000 € d'épargne sur Livret A et assurance-vie en euros, je veux commencer à investir mais je ne sais pas par où commencer..." aria-describedby="f-message-hint"></textarea>
-            <p id="f-message-hint" style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;">Ces informations restent strictement confidentielles et ne sont utilisées que pour préparer notre échange.</p>
-          </div>
-
-          <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:20px;">
-            <input type="checkbox" id="f-rgpd" name="rgpd" style="margin-top:3px;accent-color:var(--gold);width:16px;height:16px;flex-shrink:0;" required aria-required="true">
-            <label for="f-rgpd" style="font-size:0.8rem;color:var(--text-muted);cursor:pointer;">
-              J'accepte que mes données soient utilisées pour répondre à ma demande de diagnostic. Conformément au RGPD, vous pouvez exercer vos droits à l'adresse indiquée dans les <a href="#mentions">mentions légales</a>.
-            </label>
-          </div>
-
-          <button type="submit" class="btn btn-primary" style="width:100%;font-size:1rem;">
-            📅 Envoyer ma demande de diagnostic
-          </button>
-        </form>
-
-        <div id="form-success" class="form-success" role="alert" aria-live="polite">
-          <div class="success-icon">✅</div>
-          <h3>Message envoyé !</h3>
-          <p>Merci pour votre demande. Je vous réponds dans les 24h ouvrées pour confirmer un créneau de diagnostic.</p>
-          <a href="index.html" class="btn btn-ghost" style="margin-top:24px;">← Retour à l'accueil</a>
-        </div>
-      </div>
-
-      <!-- Colonne droite -->
-      <div>
-        <!-- Coordonnées -->
-        <div class="card reveal" style="margin-bottom:28px;">
-          <h3 style="font-family:var(--font-display);font-size:1.2rem;font-weight:600;margin-bottom:20px;color:var(--text-primary);">Coordonnées</h3>
-
-          <div class="contact-info-item">
-            <div class="contact-info-icon" aria-hidden="true">📞</div>
-            <div>
-              <div class="contact-info-label">Téléphone</div>
-              <div class="contact-info-value">
-                <a href="tel:+33645880184">06 45 88 01 84</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="contact-info-item">
-            <div class="contact-info-icon" aria-hidden="true">✉️</div>
-            <div>
-              <div class="contact-info-label">Email</div>
-              <div class="contact-info-value">
-                <a href="mailto:jean.delonca@gmail.com">jean.delonca@gmail.com</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="contact-info-item">
-            <div class="contact-info-icon" aria-hidden="true">📍</div>
-            <div>
-              <div class="contact-info-label">Zone géographique</div>
-              <div class="contact-info-value">France entière (principalement en visio)<br>Déplacements possibles selon dossier</div>
-            </div>
-          </div>
-
-          <div class="contact-info-item" style="margin-bottom:0;">
-            <div class="contact-info-icon" aria-hidden="true">🕐</div>
-            <div>
-              <div class="contact-info-label">Disponibilité</div>
-              <div class="contact-info-value">7j/7, sur rendez-vous — je m'adapte entièrement à vos horaires et contraintes</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <span class="page-hero-tag">Légal</span>
+    <h1>Mentions <em>légales.</em></h1>
+    <p>Informations légales obligatoires relatives à l'éditeur du site, au statut réglementaire et à la politique de confidentialité.</p>
   </div>
 </section>
 
 <!-- ── MENTIONS LÉGALES ── -->
-<section class="section section--alt" id="mentions" aria-label="Mentions légales">
+<section class="section" id="mentions" aria-label="Mentions légales">
   <div class="container">
-    <div class="text-center reveal" style="margin-bottom:40px;">
-      <span class="section-tag">Légal</span>
-      <h2 class="section-title">Mentions légales</h2>
-      <div class="gold-line"></div>
-    </div>
     <div class="legal-block reveal">
       <h3>Éditeur du site</h3>
       <p>
@@ -226,7 +82,7 @@
 
       <h3>Politique de confidentialité & RGPD</h3>
       <p>
-        Les données personnelles collectées via les formulaires de ce site (nom, email, téléphone, informations patrimoniales) sont utilisées exclusivement pour répondre à vos demandes de contact et de diagnostic. Elles ne sont transmises à aucun tiers à des fins commerciales. Conformément au Règlement Général sur la Protection des Données (RGPD — UE 2016/679), vous disposez d'un droit d'accès, de rectification, de suppression et de portabilité de vos données. Pour exercer ces droits, contactez : jean.delonca@gmail.com. Les données sont conservées 3 ans à compter du dernier contact.
+        Ce site est un site vitrine à vocation pédagogique. Aucune donnée personnelle n'est collectée via ce site. Conformément au Règlement Général sur la Protection des Données (RGPD — UE 2016/679), vous disposez d'un droit d'accès, de rectification et de suppression de toute donnée vous concernant. Pour exercer ces droits : jean.delonca@gmail.com.
       </p>
 
       <h3>Cookies</h3>
@@ -271,23 +127,22 @@
         <ul>
           <li><a href="pourquoi-cgp.html">Pourquoi un CGP ?</a></li>
           <li><a href="ressources.html">Ressources</a></li>
-          <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Légal</h4>
         <ul>
-          <li><a href="#mentions">Mentions légales</a></li>
-          <li><a href="#mentions">Confidentialité</a></li>
-          <li><a href="#mentions">RGPD</a></li>
+          <li><a href="contact.html#mentions">Mentions légales</a></li>
+          <li><a href="contact.html#mentions">Confidentialité</a></li>
+          <li><a href="contact.html#mentions">RGPD</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <p>© 2024 Delonca Consulting. Tous droits réservés.</p>
       <div class="footer-legal">
-        <a href="#mentions">Mentions légales</a>
-        <a href="#mentions">RGPD</a>
+        <a href="contact.html#mentions">Mentions légales</a>
+        <a href="contact.html#mentions">RGPD</a>
       </div>
     </div>
   </div>
