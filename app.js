@@ -1,6 +1,6 @@
 /* ============================================================
    DELONCA CONSULTING — app.js
-   Navigation, scroll reveal, simulators, FAQ, forms
+   Navigation, scroll reveal, simulators, FAQ
    ============================================================ */
 
 'use strict';
@@ -22,7 +22,6 @@ if (burger && mobileMenu) {
     mobileMenu.classList.toggle('open', open);
     burger.setAttribute('aria-expanded', open);
   });
-  // Close on link click
   mobileMenu.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => {
       burger.classList.remove('open');
@@ -30,7 +29,6 @@ if (burger && mobileMenu) {
       burger.setAttribute('aria-expanded', false);
     });
   });
-  // Close on outside click
   document.addEventListener('click', (e) => {
     if (!nav.contains(e.target) && !mobileMenu.contains(e.target)) {
       burger.classList.remove('open');
@@ -85,6 +83,9 @@ function formatNum(n, decimals = 0) {
   return new Intl.NumberFormat('fr-FR', { maximumFractionDigits: decimals }).format(n);
 }
 
+// taux Livret A à mettre à jour si évolution officielle
+const LIVRET_A_RATE = 0.015;
+
 // ── SIMULATOR A — Intérêts composés ─────────────────────────
 (function () {
   const el = document.getElementById('sim-compound');
@@ -100,10 +101,15 @@ function formatNum(n, decimals = 0) {
     rendement: el.querySelector('#ic-rendement-val'),
     duree:     el.querySelector('#ic-duree-val'),
   };
-  const resultVal = el.querySelector('#ic-result');
-  const gainVal   = el.querySelector('#ic-gain');
-  const apportVal = el.querySelector('#ic-apport');
-  const canvas    = el.querySelector('#ic-chart');
+
+  const capitalDisplayEl = el.querySelector('#ic-capital-display');
+  const resultVal        = el.querySelector('#ic-result');
+  const gainVal          = el.querySelector('#ic-gain');
+  const apportVal        = el.querySelector('#ic-apport');
+  const gainPctEl        = el.querySelector('#ic-gain-pct');
+  const phraseEl         = el.querySelector('#ic-phrase');
+
+  let icChart = null;
 
   function calc() {
     const C  = parseFloat(inputs.capital.value)   || 0;
@@ -111,105 +117,246 @@ function formatNum(n, decimals = 0) {
     const r  = parseFloat(inputs.rendement.value)  / 100;
     const n  = parseInt(inputs.duree.value);
     const rm = r / 12;
-    const months = n * 12;
 
-    let total = C;
-    for (let i = 0; i < months; i++) {
-      total = total * (1 + rm) + M;
+    // Build year-by-year data
+    const compoundData = [C];
+    const linearData   = [C];
+    let running = C;
+    for (let y = 1; y <= n; y++) {
+      for (let m = 0; m < 12; m++) {
+        running = running * (1 + rm) + M;
+      }
+      compoundData.push(running);
+      linearData.push(C + M * y * 12);
     }
 
-    const apportTotal = C + M * months;
-    const gain = total - apportTotal;
+    const total       = running;
+    const apportTotal = C + M * n * 12;
+    const gain        = total - apportTotal;
+    const gainPct     = total > 0 ? (gain / total) * 100 : 0;
 
+    if (capitalDisplayEl) capitalDisplayEl.textContent = formatEuro(C);
     resultVal.textContent = formatEuro(total);
     gainVal.textContent   = formatEuro(gain);
     apportVal.textContent = formatEuro(apportTotal);
+    if (gainPctEl) gainPctEl.textContent = gainPct.toFixed(0) + ' %';
+    if (phraseEl) {
+      phraseEl.textContent = `Sur ${formatEuro(total)} finaux, ${formatEuro(apportTotal)} proviennent de vos versements et ${formatEuro(gain)} des intérêts composés.`;
+    }
 
-    if (displays.rendement) displays.rendement.textContent = r * 100 + ' %';
+    if (displays.rendement) displays.rendement.textContent = (r * 100) + ' %';
     if (displays.duree)     displays.duree.textContent = n + ' ans';
 
-    drawChart(canvas, apportTotal, gain);
+    drawChart(n, linearData, compoundData);
   }
 
-  function drawChart(c, apport, gain) {
-    if (!c) return;
-    const ctx = c.getContext('2d');
-    const W = c.width = c.offsetWidth * window.devicePixelRatio;
-    const H = c.height = 160 * window.devicePixelRatio;
-    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-    const w = c.offsetWidth, h = 160;
+  function drawChart(n, linearData, compoundData) {
+    const canvas = el.querySelector('#ic-chart');
+    if (!canvas || typeof Chart === 'undefined') return;
 
-    const total = apport + gain;
-    const pct = apport / total;
+    const labels = Array.from({ length: n + 1 }, (_, i) => i);
 
-    ctx.clearRect(0, 0, w, h);
+    if (icChart) {
+      icChart.data.labels = labels;
+      icChart.data.datasets[0].data = linearData;
+      icChart.data.datasets[1].data = compoundData;
+      icChart.update();
+      return;
+    }
 
-    // Bar background
-    const bx = 0, by = 40, bw = w, bh = 20;
-    ctx.fillStyle = 'rgba(255,255,255,0.06)';
-    ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 6); ctx.fill();
-
-    // Apport bar
-    const apportW = pct * bw;
-    ctx.fillStyle = 'rgba(201,168,76,0.4)';
-    ctx.beginPath(); ctx.roundRect(bx, by, apportW, bh, [6, 0, 0, 6]); ctx.fill();
-
-    // Gain bar
-    const gainW = bw - apportW;
-    const grd = ctx.createLinearGradient(apportW, 0, bw, 0);
-    grd.addColorStop(0, '#C9A84C');
-    grd.addColorStop(1, '#E2C47A');
-    ctx.fillStyle = grd;
-    ctx.beginPath(); ctx.roundRect(apportW, by, gainW, bh, [0, 6, 6, 0]); ctx.fill();
-
-    // Labels
-    ctx.font = '12px Outfit, sans-serif';
-    ctx.fillStyle = 'rgba(138,143,168,0.8)';
-    ctx.fillText('Versements', 4, 32);
-    ctx.textAlign = 'right';
-    ctx.fillStyle = '#C9A84C';
-    ctx.fillText('Intérêts générés', w - 4, 32);
-    ctx.textAlign = 'left';
-
-    ctx.fillStyle = 'rgba(255,255,255,0.3)';
-    ctx.font = '11px Outfit, sans-serif';
-    ctx.fillText(Math.round(pct * 100) + ' %', 6, by + bh + 18);
-    ctx.textAlign = 'right';
-    ctx.fillStyle = 'rgba(201,168,76,0.9)';
-    ctx.fillText(Math.round((1 - pct) * 100) + ' %', w - 6, by + bh + 18);
-    ctx.textAlign = 'left';
+    icChart = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Capital versé',
+            data: linearData,
+            borderColor: 'rgba(138,143,168,0.55)',
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0,
+          },
+          {
+            label: 'Capital avec intérêts composés',
+            data: compoundData,
+            borderColor: '#C9A84C',
+            backgroundColor: 'rgba(201,168,76,0.07)',
+            borderWidth: 2.5,
+            pointRadius: 0,
+            tension: 0.3,
+            fill: true,
+          }
+        ]
+      },
+      options: {
+        animation: { duration: 500 },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              color: 'rgba(234,230,220,0.7)',
+              font: { family: 'Outfit, sans-serif', size: 11 },
+              boxWidth: 12,
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => ' ' + ctx.dataset.label + ' : ' + formatEuro(ctx.parsed.y)
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: { display: true, text: 'Années', color: 'rgba(138,143,168,0.7)', font: { size: 10 } },
+            ticks: { color: 'rgba(138,143,168,0.7)', font: { family: 'Outfit, sans-serif', size: 10 } },
+            grid: { color: 'rgba(255,255,255,0.04)' }
+          },
+          y: {
+            ticks: {
+              color: 'rgba(138,143,168,0.7)',
+              font: { family: 'Outfit, sans-serif', size: 10 },
+              callback: (v) => new Intl.NumberFormat('fr-FR', {
+                notation: 'compact', maximumSignificantDigits: 3
+              }).format(v) + ' €'
+            },
+            grid: { color: 'rgba(255,255,255,0.04)' }
+          }
+        }
+      }
+    });
   }
 
   Object.values(inputs).forEach(i => i && i.addEventListener('input', calc));
   calc();
 })();
 
-// ── SIMULATOR B — Coût de l'inaction ────────────────────────
+// ── SIMULATOR B — Inflation vs Épargne ──────────────────────
 (function () {
-  const el = document.getElementById('sim-inaction');
+  const el = document.getElementById('sim-inflation');
   if (!el) return;
 
-  const capital  = el.querySelector('#ci-capital');
-  const duree    = el.querySelector('#ci-duree');
-  const dureeVal = el.querySelector('#ci-duree-val');
-  const r1Result = el.querySelector('#ci-r1');
-  const r5Result = el.querySelector('#ci-r5');
-  const deltaResult = el.querySelector('#ci-delta');
+  const inputs = {
+    capital: el.querySelector('#inf-capital'),
+    taux:    el.querySelector('#inf-taux'),
+    duree:   el.querySelector('#inf-duree'),
+  };
+  const displays = {
+    taux:  el.querySelector('#inf-taux-val'),
+    duree: el.querySelector('#inf-duree-val'),
+  };
+
+  const nominalEl = el.querySelector('#inf-nominal');
+  const reelEl    = el.querySelector('#inf-reel');
+  const perteEl   = el.querySelector('#inf-perte');
+
+  let infChart = null;
 
   function calc() {
-    const C = parseFloat(capital.value) || 0;
-    const n = parseInt(duree.value);
-    if (dureeVal) dureeVal.textContent = n + ' ans';
+    const C   = parseFloat(inputs.capital.value) || 0;
+    const inf = parseFloat(inputs.taux.value) / 100;
+    const n   = parseInt(inputs.duree.value);
 
-    const v1 = C * Math.pow(1.01, n);
-    const v5 = C * Math.pow(1.05, n);
+    if (displays.taux)  displays.taux.textContent  = (inf * 100).toFixed(1) + ' %';
+    if (displays.duree) displays.duree.textContent = n + ' ans';
 
-    r1Result.textContent    = formatEuro(v1);
-    r5Result.textContent    = formatEuro(v5);
-    deltaResult.textContent = formatEuro(v5 - v1);
+    const reelFinal = C / Math.pow(1 + inf, n);
+    const perte     = C - reelFinal;
+    const pertePct  = C > 0 ? (perte / C) * 100 : 0;
+
+    if (nominalEl) nominalEl.textContent = formatEuro(C);
+    if (reelEl)    reelEl.textContent    = formatEuro(reelFinal);
+    if (perteEl)   perteEl.textContent   = '−' + formatEuro(perte) + ' (−' + pertePct.toFixed(0) + ' %)';
+
+    const nominalData = Array.from({ length: n + 1 }, () => C);
+    const reelData    = Array.from({ length: n + 1 }, (_, y) => C / Math.pow(1 + inf, y));
+
+    drawChart(n, nominalData, reelData);
   }
 
-  [capital, duree].forEach(i => i && i.addEventListener('input', calc));
+  function drawChart(n, nominalData, reelData) {
+    const canvas = el.querySelector('#inf-chart');
+    if (!canvas || typeof Chart === 'undefined') return;
+
+    const labels = Array.from({ length: n + 1 }, (_, i) => i);
+
+    if (infChart) {
+      infChart.data.labels = labels;
+      infChart.data.datasets[0].data = nominalData;
+      infChart.data.datasets[1].data = reelData;
+      infChart.update();
+      return;
+    }
+
+    infChart = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Valeur nominale',
+            data: nominalData,
+            borderColor: 'rgba(138,143,168,0.55)',
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            borderDash: [5, 4],
+            pointRadius: 0,
+            tension: 0,
+          },
+          {
+            label: 'Pouvoir d\'achat réel',
+            data: reelData,
+            borderColor: '#EF6060',
+            backgroundColor: 'rgba(239,96,96,0.07)',
+            borderWidth: 2.5,
+            pointRadius: 0,
+            tension: 0.2,
+            fill: true,
+          }
+        ]
+      },
+      options: {
+        animation: { duration: 500 },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              color: 'rgba(234,230,220,0.7)',
+              font: { family: 'Outfit, sans-serif', size: 11 },
+              boxWidth: 12,
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => ' ' + ctx.dataset.label + ' : ' + formatEuro(ctx.parsed.y)
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: { display: true, text: 'Années', color: 'rgba(138,143,168,0.7)', font: { size: 10 } },
+            ticks: { color: 'rgba(138,143,168,0.7)', font: { family: 'Outfit, sans-serif', size: 10 } },
+            grid: { color: 'rgba(255,255,255,0.04)' }
+          },
+          y: {
+            ticks: {
+              color: 'rgba(138,143,168,0.7)',
+              font: { family: 'Outfit, sans-serif', size: 10 },
+              callback: (v) => new Intl.NumberFormat('fr-FR', {
+                notation: 'compact', maximumSignificantDigits: 3
+              }).format(v) + ' €'
+            },
+            grid: { color: 'rgba(255,255,255,0.04)' }
+          }
+        }
+      }
+    });
+  }
+
+  Object.values(inputs).forEach(i => i && i.addEventListener('input', calc));
   calc();
 })();
 
@@ -259,38 +406,37 @@ function formatNum(n, decimals = 0) {
   const el = document.getElementById('sim-locatif');
   if (!el) return;
 
-  const prix    = el.querySelector('#lo-prix');
-  const apport  = el.querySelector('#lo-apport');
-  const loyer   = el.querySelector('#lo-loyer');
-  const taux    = el.querySelector('#lo-taux');
-  const cashEl  = el.querySelector('#lo-cashflow');
-  const yieldEl = el.querySelector('#lo-yield');
+  const prix     = el.querySelector('#lo-prix');
+  const apport   = el.querySelector('#lo-apport');
+  const loyer    = el.querySelector('#lo-loyer');
+  const taux     = el.querySelector('#lo-taux');
+  const cashEl   = el.querySelector('#lo-cashflow');
+  const yieldEl  = el.querySelector('#lo-yield');
   const effortEl = el.querySelector('#lo-effort');
 
   function calc() {
-    const P = parseFloat(prix.value) || 0;
+    const P = parseFloat(prix.value)   || 0;
     const A = parseFloat(apport.value) || 0;
-    const L = parseFloat(loyer.value) || 0;
+    const L = parseFloat(loyer.value)  || 0;
     const T = parseFloat(taux.value) / 100 || 0.035;
     const dureeAns = 20;
 
     const emprunt = P - A;
     const rm = T / 12;
-    const n = dureeAns * 12;
+    const n  = dureeAns * 12;
     let mensualite = 0;
     if (emprunt > 0 && rm > 0) {
       mensualite = emprunt * (rm * Math.pow(1 + rm, n)) / (Math.pow(1 + rm, n) - 1);
     }
 
-    const chargesEstim = L * 0.1; // ~10% charges
-    const cashflow = L - mensualite - chargesEstim;
-    const rendBrut = P > 0 ? (L * 12 / P) * 100 : 0;
+    const chargesEstim = L * 0.1;
+    const cashflow  = L - mensualite - chargesEstim;
+    const rendBrut  = P > 0 ? (L * 12 / P) * 100 : 0;
 
-    cashEl.textContent  = formatEuro(cashflow);
-    yieldEl.textContent = rendBrut.toFixed(2) + ' %';
+    cashEl.textContent   = formatEuro(cashflow);
+    yieldEl.textContent  = rendBrut.toFixed(2) + ' %';
     effortEl.textContent = formatEuro(mensualite);
 
-    // Color cashflow
     cashEl.style.color = cashflow >= 0 ? '#C9A84C' : '#EF6060';
   }
 
@@ -298,115 +444,16 @@ function formatNum(n, decimals = 0) {
   calc();
 })();
 
-// ── Contact form (Web3Forms) ──────────────────────────────────
-(function () {
-  const form = document.getElementById('contact-form');
-  if (!form) return;
-
-  const submitBtn = form.querySelector('button[type="submit"]');
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    // Validation
-    const errors = validateForm(form);
-    if (errors.length > 0) {
-      showErrors(form, errors);
-      return;
-    }
-
-    // Bouton en état "chargement"
-    const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '⏳ Envoi en cours…';
-    }
-
-    try {
-      const formData = new FormData(form);
-      const object = {};
-      formData.forEach((val, key) => { object[key] = val; });
-
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(object)
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        // Succès : masquer le formulaire, afficher la confirmation
-        form.style.display = 'none';
-        const success = document.getElementById('form-success');
-        if (success) success.style.display = 'block';
-      } else {
-        throw new Error(result.message || 'Erreur lors de l\'envoi.');
-      }
-    } catch (err) {
-      // Erreur : remettre le bouton et afficher un message
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalBtnText;
-      }
-      showGlobalError(form, '❌ Une erreur est survenue. Veuillez réessayer ou m\'écrire directement à jean.delonca@gmail.com');
-      console.error('Form error:', err);
-    }
-  });
-
-  function validateForm(form) {
-    const errors = [];
-    const nom   = form.querySelector('#f-nom');
-    const email = form.querySelector('#f-email');
-    const rgpd  = form.querySelector('#f-rgpd');
-
-    if (!nom || !nom.value.trim()) errors.push({ field: nom, msg: 'Votre nom est requis.' });
-    if (!email || !email.value.trim()) {
-      errors.push({ field: email, msg: 'Votre email est requis.' });
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
-      errors.push({ field: email, msg: 'Email invalide.' });
-    }
-    if (rgpd && !rgpd.checked) errors.push({ field: rgpd, msg: 'Vous devez accepter la politique de confidentialité.' });
-    return errors;
-  }
-
-  function showErrors(form, errors) {
-    form.querySelectorAll('.field-error').forEach(e => e.remove());
-    form.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(i => {
-      i.style.borderColor = '';
-    });
-    errors.forEach(({ field, msg }) => {
-      if (!field) return;
-      field.style.borderColor = '#EF6060';
-      const err = document.createElement('p');
-      err.className = 'field-error';
-      err.style.cssText = 'color:#EF6060;font-size:0.78rem;margin-top:4px;';
-      err.textContent = msg;
-      field.parentNode.appendChild(err);
-    });
-    if (errors[0]?.field) errors[0].field.focus();
-  }
-
-  function showGlobalError(form, msg) {
-    form.querySelectorAll('.global-error').forEach(e => e.remove());
-    const err = document.createElement('p');
-    err.className = 'global-error';
-    err.style.cssText = 'color:#EF6060;font-size:0.88rem;margin-bottom:16px;padding:12px;background:rgba(239,96,96,0.08);border-radius:8px;';
-    err.textContent = msg;
-    form.insertBefore(err, form.firstChild);
-  }
-})();
-
 // ── Numbers counter animation ────────────────────────────────
 function animateCounter(el) {
-  const target = parseFloat(el.dataset.target) || 0;
+  const target   = parseFloat(el.dataset.target) || 0;
   const duration = 1600;
-  const start = performance.now();
+  const start    = performance.now();
 
   function update(now) {
     const progress = Math.min((now - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    const value = target * eased;
+    const eased    = 1 - Math.pow(1 - progress, 3);
+    const value    = target * eased;
 
     if (el.dataset.format === 'percent') {
       el.textContent = value.toFixed(0) + ' %';

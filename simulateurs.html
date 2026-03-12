@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simulateurs patrimoniaux — Delonca Consulting</title>
-  <meta name="description" content="Simulez vos intérêts composés, le coût de l'inaction, votre taux d'épargne et votre cashflow locatif. Estimations gratuites.">
+  <meta name="description" content="Simulez vos intérêts composés, l'impact de l'inflation, votre taux d'épargne et votre cashflow locatif. Outils pédagogiques gratuits.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -24,11 +24,18 @@
     }
     @media (max-width: 480px) { .sim-inputs-row { grid-template-columns: 1fr; } }
 
-    .ic-result-row {
+    /* Intérêts composés — résultats */
+    .ic-row-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 12px;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .ic-row-2 {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
     }
     .ic-result-mini {
       background: rgba(255,255,255,0.04);
@@ -37,32 +44,34 @@
       padding: 12px;
       text-align: center;
     }
-    .ic-result-mini-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
-    .ic-result-mini-val { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--text-primary); }
+    .ic-result-mini-label { font-size: 0.68rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+    .ic-result-mini-val   { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; color: var(--text-primary); }
 
-    .inaction-compare {
+    /* Inflation — résultats */
+    .inf-result-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
       margin-top: 16px;
     }
-    .inaction-box {
+    .inf-result-box {
       background: rgba(255,255,255,0.04);
       border: 1px solid var(--border-subtle);
       border-radius: 8px;
-      padding: 16px;
+      padding: 14px;
       text-align: center;
     }
-    .inaction-box.gold-box { border-color: var(--gold); background: var(--gold-dim); }
-    .inaction-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
-    .inaction-val { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--text-primary); }
-    .inaction-box.gold-box .inaction-val { color: var(--gold); }
-    .inaction-sub { font-size: 0.72rem; color: var(--text-dim); margin-top: 2px; }
+    .inf-result-box.red-box { border-color: #EF6060; background: rgba(239,96,96,0.06); }
+    .inf-result-label { font-size: 0.68rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+    .inf-result-val   { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text-primary); }
+    .inf-result-box.red-box .inf-result-val { color: #EF6060; }
 
+    /* Budget */
     .score-bar-wrap { margin: 16px 0; }
     .score-bar-track { height: 8px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; }
     .score-bar-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, #EF6060 0%, #F0A340 40%, #C9A84C 70%, #5EA85C 100%); transition: width 0.4s ease; }
 
+    /* Locatif */
     .cashflow-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -77,7 +86,7 @@
       text-align: center;
     }
     .cashflow-mini-label { font-size: 0.68rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
-    .cashflow-mini-val { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; }
+    .cashflow-mini-val   { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -90,12 +99,9 @@
     </a>
     <ul class="nav-links" role="list">
       <li><a href="index.html" class="nav-link">Accueil</a></li>
-      <li><a href="a-propos.html" class="nav-link">À propos</a></li>
       <li><a href="pourquoi-cgp.html" class="nav-link">Pourquoi un CGP ?</a></li>
-      <li><a href="methode.html" class="nav-link">Méthode</a></li>
       <li><a href="simulateurs.html" class="nav-link active">Simulateurs</a></li>
-      <li><a href="ressources.html" class="nav-link">Ressources</a></li>
-      <li><a href="contact.html" class="nav-link">Mentions légales</a></li>
+      <li><a href="a-propos.html" class="nav-link">À propos</a></li>
     </ul>
     <button class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -104,20 +110,17 @@
 </nav>
 <div class="nav-mobile" id="nav-mobile" role="dialog" aria-label="Menu mobile">
   <a href="index.html">Accueil</a>
-  <a href="a-propos.html">À propos</a>
   <a href="pourquoi-cgp.html">Pourquoi un CGP ?</a>
-  <a href="methode.html">Méthode</a>
   <a href="simulateurs.html">Simulateurs</a>
-  <a href="ressources.html">Ressources</a>
-  <a href="contact.html">Mentions légales</a>
+  <a href="a-propos.html">À propos</a>
 </div>
 
 <!-- ── PAGE HERO ── -->
 <section class="page-hero" aria-label="Simulateurs">
   <div class="container">
-    <span class="page-hero-tag">Simulateurs teaser</span>
+    <span class="page-hero-tag">Simulateurs</span>
     <h1>Visualisez l'impact<br>de vos <em>décisions.</em></h1>
-    <p>Ces simulateurs donnent une estimation indicative pour illustrer des principes clés et appuyer votre réflexion patrimoniale.</p>
+    <p>Des outils pédagogiques pour comprendre les grands principes de la gestion patrimoniale. Les résultats sont indicatifs et ne constituent pas un conseil en investissement.</p>
   </div>
 </section>
 
@@ -126,101 +129,137 @@
   <div class="container">
     <div class="sim-grid">
 
-      <!-- SIM A : Intérêts composés -->
+      <!-- ── SIM A : Intérêts composés ── -->
       <div class="simulator-card reveal" id="sim-compound" aria-label="Simulateur intérêts composés">
         <div class="simulator-header">
           <div class="simulator-icon" aria-hidden="true">📈</div>
           <div>
             <div class="simulator-title">Intérêts composés</div>
-            <div class="simulator-sub">Effet boule de neige sur votre épargne</div>
+            <div class="simulator-sub">L'effet boule de neige sur votre épargne</div>
           </div>
         </div>
         <div class="simulator-body">
+
           <div class="sim-inputs-row">
             <div class="form-group">
               <label class="form-label" for="ic-capital">Capital initial (€)</label>
-              <input class="form-input" type="number" id="ic-capital" value="10000" min="0" max="1000000" step="500" aria-describedby="ic-capital-hint">
+              <input class="form-input" type="number" id="ic-capital" value="10000" min="0" max="1000000" step="500">
             </div>
             <div class="form-group">
               <label class="form-label" for="ic-mensuel">Versement mensuel (€)</label>
               <input class="form-input" type="number" id="ic-mensuel" value="200" min="0" max="10000" step="50">
             </div>
           </div>
+
           <div class="form-group">
             <label class="form-label" for="ic-rendement">Rendement annuel : <strong id="ic-rendement-val">5 %</strong></label>
             <input class="form-input" type="range" id="ic-rendement" value="5" min="1" max="10" step="0.5" aria-valuemin="1" aria-valuemax="10">
             <div class="range-row"><span>1 %</span><span>10 %</span></div>
           </div>
+
           <div class="form-group">
             <label class="form-label" for="ic-duree">Durée : <strong id="ic-duree-val">20 ans</strong></label>
             <input class="form-input" type="range" id="ic-duree" value="20" min="1" max="40" step="1" aria-valuemin="1" aria-valuemax="40">
             <div class="range-row"><span>1 an</span><span>40 ans</span></div>
           </div>
-          <div class="ic-result-row">
+
+          <!-- Résultats — ligne 1 : capital initial / total versé / capital final -->
+          <div class="ic-row-3">
+            <div class="ic-result-mini">
+              <div class="ic-result-mini-label">Capital initial</div>
+              <div class="ic-result-mini-val" id="ic-capital-display">—</div>
+            </div>
+            <div class="ic-result-mini">
+              <div class="ic-result-mini-label">Total versé</div>
+              <div class="ic-result-mini-val" id="ic-apport">—</div>
+            </div>
             <div class="ic-result-mini">
               <div class="ic-result-mini-label">Capital final</div>
               <div class="ic-result-mini-val" id="ic-result">—</div>
             </div>
-            <div class="ic-result-mini">
-              <div class="ic-result-mini-label">Vos versements</div>
-              <div class="ic-result-mini-val" id="ic-apport">—</div>
-            </div>
+          </div>
+
+          <!-- Résultats — ligne 2 : intérêts générés (mis en valeur) + % -->
+          <div class="ic-row-2">
             <div class="ic-result-mini" style="border-color:var(--gold);background:var(--gold-dim);">
               <div class="ic-result-mini-label" style="color:var(--gold);">Intérêts générés</div>
-              <div class="ic-result-mini-val" style="color:var(--gold);" id="ic-gain">—</div>
+              <div class="ic-result-mini-val" style="color:var(--gold);font-size:1.35rem;" id="ic-gain">—</div>
+            </div>
+            <div class="ic-result-mini">
+              <div class="ic-result-mini-label">Part des intérêts</div>
+              <div class="ic-result-mini-val" id="ic-gain-pct">—</div>
             </div>
           </div>
-          <canvas id="ic-chart" style="width:100%;height:auto;" role="img" aria-label="Graphique répartition capital"></canvas>
-          <div class="sim-cta-block">
-            💡 Ces chiffres ignorent la fiscalité et l'inflation. Ces résultats ont une vocation pédagogique uniquement.
+
+          <!-- Phrase pédagogique dynamique -->
+          <p id="ic-phrase" style="padding:12px 14px;background:rgba(201,168,76,0.05);border-left:3px solid rgba(201,168,76,0.35);border-radius:0 6px 6px 0;font-size:0.82rem;color:var(--text-muted);line-height:1.65;margin-bottom:10px;"></p>
+
+          <!-- Graphique en courbes -->
+          <div style="position:relative;height:200px;">
+            <canvas id="ic-chart" role="img" aria-label="Graphique évolution du capital"></canvas>
+          </div>
+
+          <div class="sim-cta-block" style="margin-top:10px;">
+            💡 Résultats hors fiscalité et inflation. Vocation pédagogique uniquement.
           </div>
         </div>
       </div>
 
-      <!-- SIM B : Coût de l'inaction -->
-      <div class="simulator-card reveal" id="sim-inaction" aria-label="Simulateur coût de l'inaction">
+      <!-- ── SIM B : Inflation vs Épargne ── -->
+      <div class="simulator-card reveal" id="sim-inflation" aria-label="Simulateur impact de l'inflation">
         <div class="simulator-header">
-          <div class="simulator-icon" aria-hidden="true">⏳</div>
+          <div class="simulator-icon" aria-hidden="true">📉</div>
           <div>
-            <div class="simulator-title">Coût de l'inaction</div>
-            <div class="simulator-sub">1 % vs 5 % de rendement : la vraie différence</div>
+            <div class="simulator-title">Inflation & épargne</div>
+            <div class="simulator-sub">Ce que l'inflation fait à votre capital</div>
           </div>
         </div>
         <div class="simulator-body">
+
           <div class="form-group">
-            <label class="form-label" for="ci-capital">Capital placé (€)</label>
-            <input class="form-input" type="number" id="ci-capital" value="30000" min="1000" max="1000000" step="1000">
+            <label class="form-label" for="inf-capital">Capital (€)</label>
+            <input class="form-input" type="number" id="inf-capital" value="20000" min="1000" max="1000000" step="1000">
           </div>
+
           <div class="form-group">
-            <label class="form-label" for="ci-duree">Durée : <strong id="ci-duree-val">15 ans</strong></label>
-            <input class="form-input" type="range" id="ci-duree" value="15" min="1" max="35" step="1" aria-valuemin="1" aria-valuemax="35">
-            <div class="range-row"><span>1 an</span><span>35 ans</span></div>
+            <label class="form-label" for="inf-taux">Inflation annuelle : <strong id="inf-taux-val">3,0 %</strong></label>
+            <input class="form-input" type="range" id="inf-taux" value="3" min="0.5" max="8" step="0.5" aria-valuemin="0.5" aria-valuemax="8">
+            <div class="range-row"><span>0,5 %</span><span>8 %</span></div>
           </div>
-          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:12px;">Résultat estimatif pour deux scénarios :</p>
-          <div class="inaction-compare">
-            <div class="inaction-box">
-              <div class="inaction-label">Livret A (~ 1 %)</div>
-              <div class="inaction-val" id="ci-r1">—</div>
-              <div class="inaction-sub">Rendement faible</div>
+
+          <div class="form-group">
+            <label class="form-label" for="inf-duree">Durée : <strong id="inf-duree-val">20 ans</strong></label>
+            <input class="form-input" type="range" id="inf-duree" value="20" min="1" max="40" step="1" aria-valuemin="1" aria-valuemax="40">
+            <div class="range-row"><span>1 an</span><span>40 ans</span></div>
+          </div>
+
+          <div class="inf-result-row">
+            <div class="inf-result-box">
+              <div class="inf-result-label">Valeur nominale</div>
+              <div class="inf-result-val" id="inf-nominal">—</div>
             </div>
-            <div class="inaction-box gold-box">
-              <div class="inaction-label">Portefeuille diversifié (~ 5 %)</div>
-              <div class="inaction-val" id="ci-r5">—</div>
-              <div class="inaction-sub">Rendement historique moyen</div>
+            <div class="inf-result-box">
+              <div class="inf-result-label">Pouvoir d'achat estimé</div>
+              <div class="inf-result-val" id="inf-reel">—</div>
+            </div>
+            <div class="inf-result-box red-box">
+              <div class="inf-result-label">Perte estimée</div>
+              <div class="inf-result-val" id="inf-perte">—</div>
             </div>
           </div>
-          <div class="sim-result" style="margin-top:16px;">
-            <div class="sim-result-label">Manque à gagner (inaction)</div>
-            <div class="sim-result-value" id="ci-delta">—</div>
-            <div class="sim-result-sub">en faveur du portefeuille diversifié</div>
+
+          <!-- Graphique en courbes -->
+          <div style="position:relative;height:200px;margin-top:14px;">
+            <canvas id="inf-chart" role="img" aria-label="Graphique impact de l'inflation"></canvas>
           </div>
-          <div class="sim-cta-block">
-            🔎 Estimation indicative avant impôts. La fiscalité réelle dépend de votre situation personnelle.
+
+          <div class="sim-cta-block" style="margin-top:10px;">
+            🔎 Simulation indicative. L'inflation réelle varie selon les périodes et les catégories de dépenses.
           </div>
         </div>
       </div>
 
-      <!-- SIM C : Mini audit budget -->
+      <!-- ── SIM C : Mini audit budget ── -->
       <div class="simulator-card reveal" id="sim-budget" aria-label="Simulateur audit budget">
         <div class="simulator-header">
           <div class="simulator-icon" aria-hidden="true">🧮</div>
@@ -250,12 +289,12 @@
             <p id="ab-msg" style="font-size:0.83rem;color:var(--text-muted);line-height:1.65;"></p>
           </div>
           <div class="sim-cta-block" style="margin-top:12px;">
-            📊 Cet outil donne une première estimation. Un audit budgétaire complet intègre bien d'autres paramètres.
+            📊 Première estimation. Un audit budgétaire complet intègre bien d'autres paramètres.
           </div>
         </div>
       </div>
 
-      <!-- SIM D : Locatif simplifié -->
+      <!-- ── SIM D : Locatif simplifié ── -->
       <div class="simulator-card reveal" id="sim-locatif" aria-label="Simulateur investissement locatif">
         <div class="simulator-header">
           <div class="simulator-icon" aria-hidden="true">🏠</div>
@@ -281,7 +320,7 @@
               <input class="form-input" type="number" id="lo-loyer" value="750" min="0" max="10000" step="25">
             </div>
             <div class="form-group">
-              <label class="form-label" for="lo-taux">Taux crédit (%, ex: 3.5)</label>
+              <label class="form-label" for="lo-taux">Taux crédit (%, ex : 3.5)</label>
               <input class="form-input" type="number" id="lo-taux" value="3.5" min="0.5" max="8" step="0.1">
             </div>
           </div>
@@ -296,12 +335,12 @@
               <div class="cashflow-mini-val" id="lo-yield" style="color:var(--gold);">—</div>
             </div>
             <div class="cashflow-mini" style="border-color:var(--gold);">
-              <div class="cashflow-mini-label">Cashflow estimé / mois</div>
+              <div class="cashflow-mini-label">Cashflow / mois</div>
               <div class="cashflow-mini-val" id="lo-cashflow">—</div>
             </div>
           </div>
           <div class="sim-cta-block" style="margin-top:14px;">
-            🏗️ Ce calcul ignore la fiscalité, la vacance locative et les charges réelles. Il a une vocation pédagogique uniquement.
+            🏗️ Hors fiscalité, vacance locative et charges réelles. Vocation pédagogique uniquement.
           </div>
         </div>
       </div>
@@ -310,7 +349,7 @@
 
     <!-- Disclaimer global -->
     <div style="margin-top:40px;padding:20px 24px;background:rgba(255,255,255,0.03);border:1px solid var(--border-subtle);border-radius:var(--radius);font-size:0.8rem;color:var(--text-dim);line-height:1.7;" class="reveal" role="note">
-      <strong style="color:var(--text-muted);">⚠️ Avertissement :</strong> Ces simulateurs ont une vocation pédagogique et illustrative uniquement. Les résultats sont des estimations basées sur des hypothèses simplifiées, ne tenant pas compte de la fiscalité personnelle, de l'inflation, des frais réels ni des aléas de marché. Ils ne constituent en aucun cas un conseil en investissement. Les performances passées ne préjugent pas des performances futures. Pour un conseil personnalisé, contactez un professionnel habilité.
+      <strong style="color:var(--text-muted);">⚠️ Avertissement :</strong> Ces simulateurs ont une vocation pédagogique et illustrative uniquement. Les résultats sont des estimations basées sur des hypothèses simplifiées, ne tenant pas compte de la fiscalité personnelle, de l'inflation réelle, des frais ni des aléas de marché. Ils ne constituent en aucun cas un conseil en investissement. Les performances passées ne préjugent pas des performances futures.
     </div>
   </div>
 </section>
@@ -319,11 +358,11 @@
 <section class="section section--alt" aria-label="En savoir plus">
   <div class="container">
     <div class="cta-section reveal">
-      <h2>Ces outils ont une vocation pédagogique.</h2>
-      <p>Les simulateurs illustrent des principes fondamentaux. Pour approfondir votre compréhension des enjeux patrimoniaux, consultez les ressources et articles disponibles.</p>
+      <h2>Ces outils illustrent des principes fondamentaux.</h2>
+      <p>Pour comprendre pourquoi un accompagnement patrimonial structuré fait la différence, consultez la page dédiée.</p>
       <div class="cta-btns">
-        <a href="ressources.html" class="btn btn-primary">Lire les ressources →</a>
-        <a href="pourquoi-cgp.html" class="btn btn-ghost">Pourquoi un CGP ? →</a>
+        <a href="pourquoi-cgp.html" class="btn btn-primary">Pourquoi un CGP ? →</a>
+        <a href="a-propos.html" class="btn btn-ghost">À propos →</a>
       </div>
     </div>
   </div>
@@ -331,45 +370,16 @@
 
 <footer role="contentinfo">
   <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="index.html" class="nav-logo">
-          <span class="nav-logo-main">Delonca Consulting</span>
-          <span class="nav-logo-sub">Conseil en Gestion de Patrimoine</span>
-        </a>
-        <p>Accompagnement patrimonial indépendant. Agent commercial — RSAC Béziers N° 831 889 670 · 38 Rue Trajan, 34410 Sauvian.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Navigation</h4>
-        <ul>
-          <li><a href="index.html">Accueil</a></li>
-          <li><a href="a-propos.html">À propos</a></li>
-          <li><a href="methode.html">Méthode</a></li>
-          <li><a href="simulateurs.html">Simulateurs</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Conseil</h4>
-        <ul>
-          <li><a href="pourquoi-cgp.html">Pourquoi un CGP ?</a></li>
-          <li><a href="ressources.html">Ressources</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Légal</h4>
-        <ul>
-          <li><a href="contact.html#mentions">Mentions légales</a></li>
-          <li><a href="contact.html#mentions">Confidentialité</a></li>
-        </ul>
-      </div>
-    </div>
     <div class="footer-bottom">
-      <p>© 2024 Delonca Consulting. Tous droits réservés.</p>
-      <div class="footer-legal"><a href="contact.html#mentions">Mentions légales</a></div>
+      <p>© 2025 Delonca Consulting — Agent commercial RSAC Béziers N° 831 889 670</p>
+      <div class="footer-legal">
+        <a href="mentions-legales.html">Mentions légales</a>
+      </div>
     </div>
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script src="app.js" defer></script>
 </body>
 </html>

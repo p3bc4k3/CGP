@@ -105,16 +105,6 @@ button, .btn {
   transform: translateY(-1px);
 }
 
-.btn-outline-gold {
-  background: transparent;
-  color: var(--gold);
-  border: 1px solid var(--gold);
-}
-.btn-outline-gold:hover {
-  background: var(--gold-dim);
-  transform: translateY(-1px);
-}
-
 button:focus-visible, .btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
 /* --- Layout --- */
@@ -238,16 +228,6 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--gold); outli
   color: var(--text-primary);
   background: var(--border-subtle);
 }
-.nav-links .nav-cta a {
-  background: var(--gold);
-  color: #0B0F18;
-  font-weight: 500;
-  padding: 8px 18px;
-}
-.nav-links .nav-cta a:hover {
-  background: var(--gold-light);
-}
-
 .nav-burger {
   display: none;
   flex-direction: column;
